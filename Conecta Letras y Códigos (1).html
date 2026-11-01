@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Conecta Letras y Códigos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F3FC;--card:#FFFFFF;--ink:#1E1736;--mute:#625A7E;--acc:#6B3FD4;--onacc:#FFFFFF;--hl:#7FE3A0;--ok:#157347;--okbg:#DDF3E6;--bad:#B3261E;--badbg:#FBE3E1;--line:#DDD6EE;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#140F26;--card:#1F1838;--ink:#F1EEFA;--mute:#B0A8CC;--acc:#B79CFF;--onacc:#140F26;--ok:#5FD08F;--okbg:#14352A;--bad:#FF8A80;--badbg:#3D1F25;--line:#3A2F5E;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#140F26;--card:#1F1838;--ink:#F1EEFA;--mute:#B0A8CC;--acc:#B79CFF;--onacc:#140F26;--ok:#5FD08F;--okbg:#14352A;--bad:#FF8A80;--badbg:#3D1F25;--line:#3A2F5E;color-scheme:dark}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;font-size:17px}
+main{max-width:640px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:clamp(2.1rem,9vw,3.2rem);line-height:1.05;font-weight:800;margin:8px 0 12px;letter-spacing:-.02em}
+h1 .br{color:var(--acc);font-weight:400}
+h1 mark{background:linear-gradient(transparent 55%,var(--hl) 55%);color:inherit;padding:0 .1em}
+.lead{color:var(--mute);margin:0 0 22px;max-width:52ch}
+nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:16px}
+nav button{flex:1 0 auto;font:inherit;font-weight:600;padding:10px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+nav button[aria-selected="true"]{background:var(--acc);color:var(--onacc);border-color:var(--acc)}
+button:focus-visible{outline:3px solid var(--hl);outline-offset:2px}
+section{display:none;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:18px}
+section.on{display:block}
+h2{font-size:1.3rem;margin:0 0 4px}
+.sub{color:var(--mute);margin:0 0 14px;font-size:.95rem}
+.bar{height:6px;background:var(--line);border-radius:3px;margin-bottom:14px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--acc);width:0;transition:width .25s}
+.q{font-size:1.1rem;font-weight:600;margin:0 0 12px}
+.opt{display:block;width:100%;text-align:left;font:inherit;padding:12px 14px;margin:0 0 8px;border-radius:10px;border:1.5px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.opt:disabled{cursor:default}
+.opt.ok{background:var(--okbg);border-color:var(--ok);color:var(--ok)}
+.opt.bad{background:var(--badbg);border-color:var(--bad);color:var(--bad)}
+.fb{margin:10px 0;color:var(--mute);font-size:.95rem;min-height:1.4em}
+.go{font:inherit;font-weight:700;padding:11px 18px;border-radius:10px;border:0;background:var(--acc);color:var(--onacc);cursor:pointer}
+.score{font-size:2.4rem;font-weight:800;margin:6px 0}
+.txt{background:var(--bg);border-radius:10px;padding:12px 14px;margin:0 0 14px;font-size:.98rem}
+.par{font-size:1.1rem;line-height:2.1;margin:0 0 14px}
+.w{cursor:pointer;padding:2px 3px;border-radius:5px}
+.w.sel{background:var(--hl);color:#16203A}
+.w.ok{background:var(--okbg);color:var(--ok);font-weight:600}
+.w.miss{outline:2px dashed var(--bad)}
+.w.bad{background:var(--badbg);color:var(--bad);text-decoration:line-through}
+footer{margin-top:22px;color:var(--mute);font-size:.88rem}
+</style>
+</head>
+<body>
+<main>
+<h1><span class="br">{</span> Letras <mark>y</mark> Códigos <span class="br">}</span></h1>
+<p class="lead">Tres juegos para que tu ortografía deje de dar pena ajena (con cariño). Elige uno y mide tu puntaje.</p>
+<nav role="tablist">
+<button role="tab" aria-selected="true" data-t="quiz">Ortografía</button>
+<button role="tab" aria-selected="false" data-t="trivia">Trivia lectora</button>
+<button role="tab" aria-selected="false" data-t="caza">Caza‑errores</button>
+<button role="tab" aria-selected="false" data-t="diag">Diagnóstico</button>
+</nav>
+
+<section id="quiz" class="on"><h2>Quiz de ortografía</h2><p class="sub">10 preguntas. Solo una opción es correcta, no te confíes.</p><div class="box"></div></section>
+<section id="trivia"><h2>Trivia lectora</h2><p class="sub">Lee el texto con calma (no es un trino) y responde 5 preguntas.</p>
+<p class="txt">Leer críticamente no significa criticar por criticar. Significa preguntarse quién escribe, para quién lo hace y qué pretende lograr. Cuando un texto afirma algo, el lector crítico busca pruebas: datos, ejemplos o fuentes que lo respalden. También distingue entre un hecho, que puede comprobarse, y una opinión, que expresa una postura personal. Por último, compara lo que lee con otras fuentes antes de aceptarlo como verdadero.</p>
+<div class="box"></div></section>
+<section id="caza"><h2>Caza‑errores</h2><p class="sub">Toca las palabras mal escritas (hay 6) y pulsa Revisar.</p><p class="par" id="par"></p><div class="fb" id="cfb"></div><button class="go" id="rev">Revisar</button> <button class="go" id="rei" style="display:none">Reintentar</button></section>
+
+<section id="diag"><h2>Mini diagnóstico</h2><p class="sub">Responde las 3 preguntas de nuestra encuesta y recibe un consejo para cada una.</p><div class="box"></div></section>
+
+<footer><strong>Ctrl+Z a los Errores</strong><br>Campaña digital «Conecta Letras y Códigos» · Comunicación Escrita y Procesos Lectores · UNIMINUTO Neiva</footer>
+</main>
+<script>
+var Q1=[
+{q:"Vamos ___ qué dice el texto.",o:["a ver","haber","a haber"],a:0,w:"«A ver» es la preposición «a» + el verbo «ver»."},
+{q:"Debe ___ un error en el código.",o:["a ver","haber","aber"],a:1,w:"«Haber» es el verbo auxiliar: debe haber."},
+{q:"¿___ no entregaste la tarea?",o:["Porque","Por qué","Porqué"],a:1,w:"En preguntas directas se escribe «por qué», separado y con tilde."},
+{q:"No entregué la tarea ___ se me olvidó.",o:["porque","por qué","por que"],a:0,w:"«Porque» introduce una causa."},
+{q:"¿Cuál palabra está bien escrita?",o:["exámen","examen","éxamen"],a:1,w:"«Examen» es llana y termina en n: no lleva tilde."},
+{q:"___ eres el responsable del grupo.",o:["Tu","Tú"],a:1,w:"«Tú» con tilde es el pronombre personal."},
+{q:"___ muchas respuestas en la encuesta.",o:["Hubieron","Hubo"],a:1,w:"«Haber» impersonal va en singular: hubo."},
+{q:"No quiero jugar, ___ aprender.",o:["si no","sino"],a:1,w:"«Sino» contrapone dos ideas: no jugar, sino aprender."},
+{q:"Pon el libro ___, sobre la mesa.",o:["ahí","hay","ay"],a:0,w:"«Ahí» es un adverbio de lugar."},
+{q:"Ayer ella ___ la tarea completa.",o:["hizo","izo","hiso"],a:0,w:"El pasado de «hacer» es «hizo», con h y z."}];
+var Q2=[
+{q:"¿Qué significa leer críticamente según el texto?",o:["Criticar todo lo que se lee","Preguntarse quién escribe, para quién y con qué fin","Leer más rápido","Memorizar los datos"],a:1,w:"El texto lo define como preguntarse por el autor, el destinatario y el propósito."},
+{q:"Cuando un texto afirma algo, el lector crítico busca…",o:["Más adjetivos","Pruebas que lo respalden","La opinión de un amigo","El título"],a:1,w:"Busca datos, ejemplos o fuentes."},
+{q:"¿Qué diferencia a un hecho de una opinión?",o:["El hecho puede comprobarse","La opinión siempre es falsa","El hecho es más largo","No hay diferencia"],a:0,w:"El hecho se comprueba; la opinión expresa una postura personal."},
+{q:"¿Qué hace el lector crítico al final?",o:["Acepta el texto","Lo compara con otras fuentes","Lo copia","Lo olvida"],a:1,w:"Compara antes de darlo por verdadero."},
+{q:"¿Cuál sería un buen título para el texto?",o:["Cómo leer con ojos críticos","Historia de la imprenta","Reglas de tildes","El arte de resumir"],a:0,w:"Resume la idea principal del párrafo."}];
+function quiz(sec,Q,name){
+var box=sec.querySelector(".box"),i=0,pts=0;
+function show(){
+if(i>=Q.length){box.innerHTML='<p class="sub">Resultado de '+name+'</p><div class="score">'+pts+' / '+Q.length+'</div><p>'+(pts>=Q.length*.8?'¡Crack! Hasta la RAE te aplaudiría.':pts>=Q.length*.5?'Vas bien, pero repasa las que fallaste.':'Toca repasar, pero nadie nace sabiendo tildes.')+'</p><button class="go">Jugar de nuevo</button>';box.querySelector("button").onclick=function(){i=0;pts=0;show()};return}
+var q=Q[i];
+box.innerHTML='<div class="bar"><i style="width:'+(i/Q.length*100)+'%"></i></div><p class="q">'+(i+1)+'. '+q.q+'</p><div class="os"></div><div class="fb"></div><button class="go" style="display:none">'+(i==Q.length-1?'Ver resultado':'Siguiente')+'</button>';
+var os=box.querySelector(".os"),fb=box.querySelector(".fb"),nx=box.querySelector(".go");
+q.o.forEach(function(t,k){var b=document.createElement("button");b.className="opt";b.textContent=t;b.onclick=function(){
+var all=os.querySelectorAll(".opt");all.forEach(function(x){x.disabled=true});
+all[q.a].classList.add("ok");
+if(k==q.a){pts++;fb.textContent="¡Eso! "+q.w}else{b.classList.add("bad");fb.textContent="Uy, no. "+q.w}
+nx.style.display="inline-block"};os.appendChild(b)});
+nx.onclick=function(){i++;show()}}
+show()}
+quiz(document.getElementById("quiz"),Q1,"ortografía");
+quiz(document.getElementById("trivia"),Q2,"la trivia");
+var T="Ayer [hubieron|hubo] muchas personas en la biblioteca. Yo quería [aber|haber] qué libros [habian|había], pero no [encontre|encontré] nada interesante. Aun [asi|así], me [lleve|llevé] una novela para leer en casa.";
+var par=document.getElementById("par"),cfb=document.getElementById("cfb"),rev=document.getElementById("rev"),rei=document.getElementById("rei"),ws=[];
+function build(){par.innerHTML="";ws=[];cfb.textContent="";rev.style.display="";rei.style.display="none";
+T.split(/(\[[^\]]+\])|\s+/).filter(function(x){return x}).forEach(function(tok){
+var s=document.createElement("span");s.className="w";var m=tok.match(/^\[(.+)\|(.+)\]$/);
+if(m){s.textContent=m[1];s.dataset.err="1";s.dataset.fix=m[2]}else s.textContent=tok;
+s.onclick=function(){if(!s.classList.contains("ok")&&!s.classList.contains("bad")&&rev.style.display!="none")s.classList.toggle("sel")};
+par.appendChild(s);par.appendChild(document.createTextNode(" "));ws.push(s)})}
+rev.onclick=function(){var ok=0,fal=0;
+ws.forEach(function(s){var sel=s.classList.contains("sel"),err=s.dataset.err;
+s.classList.remove("sel");
+if(err&&sel){s.classList.add("ok");s.textContent=s.textContent+" → "+s.dataset.fix;ok++}
+else if(err){s.classList.add("miss");s.textContent=s.textContent+" → "+s.dataset.fix}
+else if(sel){s.classList.add("bad");fal++}});
+cfb.textContent="Encontraste "+ok+" de 6 errores"+(fal?" y marcaste "+fal+" palabra(s) que estaban bien.":".")+(ok==6&&!fal?" ¡Ojo de lince, no se te escapa ni una coma!":"");
+rev.style.display="none";rei.style.display=""};
+rei.onclick=build;build();
+var D=[
+{q:"¿Qué reglas ortográficas te cuesta más al escribir?",o:[["Las tildes y la acentuación","Di la palabra en voz alta y golpea la sílaba fuerte. Si cae en la última y la palabra termina en n, s o vocal, lleva tilde: canción, café."],["La escritura con b, v, s, c, h","Aprende por familias: si «hablar» lleva h, también «habla» y «hablador». Y ante la duda, busca en el diccionario de la RAE (dle.rae.es)."],["El uso correcto de las mayúsculas","Van al empezar un escrito, después de punto y en nombres propios. Los días y meses, en minúscula: el lunes, en octubre."]]},
+{q:"¿Qué error cometes con más frecuencia al escribir?",o:[["Confundir palabras que suenan igual (ej. hay / ahí)","«Hay» viene de haber (hay tarea), «ahí» marca lugar (ahí está) y «ay» es una queja (¡ay, otra vez!)."],["Olvidar o poner mal los signos de puntuación","La coma respira y el punto descansa. Lee en voz alta: donde haces pausa, va un signo."],["Unir o separar palabras de forma incorrecta","Prueba cambiar por otra palabra: si puedes decir «a mirar», escribe «a ver»; si no, probablemente es «haber»."]]},
+{q:"¿Qué te ayuda más a escribir mejor?",o:[["Leer con frecuencia","Es el truco silencioso: tu cerebro memoriza cómo se ven las palabras bien escritas. Diez minutos al día cuentan."],["Revisar lo que escribo antes de entregarlo","Léelo en voz alta y haz una pasada solo buscando tildes. Si agrandas la letra, los errores se notan más."],["Consultar cuando tengo dudas","Excelente hábito: guarda en favoritos el DLE de la RAE y el Diccionario panhispánico de dudas."]]}];
+(function(){var box=document.querySelector("#diag .box");D.forEach(function(d,n){var g=document.createElement("div");g.style.marginBottom="18px";g.innerHTML='<p class="q">'+(n+1)+'. '+d.q+'</p>';var tip=document.createElement("div");tip.className="fb";d.o.forEach(function(o){var b=document.createElement("button");b.className="opt";b.textContent=o[0];b.onclick=function(){g.querySelectorAll(".opt").forEach(function(x){x.classList.remove("ok")});b.classList.add("ok");tip.textContent="💡 "+o[1]};g.appendChild(b)});g.appendChild(tip);box.appendChild(g)})})();
+var tabs=document.querySelectorAll("nav button");
+tabs.forEach(function(b){b.onclick=function(){tabs.forEach(function(x){x.setAttribute("aria-selected",x==b)});
+document.querySelectorAll("section").forEach(function(s){s.classList.toggle("on",s.id==b.dataset.t)})}});
+</script>
+</body>
+</html>
